@@ -13,7 +13,8 @@ A place to see and post ideas in  the style of reddit and twitter
 ## Stack
 
   - Database - PostgreSQL
-  - Rest API - nestjs
+  - Rest API - NestJS
+  - GraphQL API - Nest JS
   - Rest Frontend - Angular with NGRX
   - GraphQL Frontend - React (Native?) with Apollo Client
 
@@ -61,4 +62,5 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
-Angular is [MIT licensed](LICENSE)
+
+Angular is [MIT licensed](LICENSE).
