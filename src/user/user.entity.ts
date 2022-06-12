@@ -6,8 +6,10 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
+import { UserRO } from './user.dto';
 
-@Entity('user')
+@Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -29,8 +31,30 @@ export class UserEntity {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  toResponseObject() {
-    const { id, created, username } = this;
-    return { id, created, username };
+  toResponseObject(showToken = true): UserRO {
+    const { id, created, username, token } = this;
+    const responseObject: UserRO = { id, created, username };
+
+    if (showToken) {
+      responseObject.token = token;
+    }
+
+    return responseObject;
+  }
+
+  async comparePassword(attempt: string) {
+    return await bcrypt.compare(attempt, this.password);
+  }
+
+  private get token() {
+    const { id, username } = this;
+    return jwt.sign(
+      {
+        id,
+        username,
+      },
+      process.env.SECRET,
+      { expiresIn: '7d' },
+    );
   }
 }
