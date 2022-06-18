@@ -7,11 +7,15 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
+
+import { AuthGuard } from 'src/shared/auth.guard';
 import { IdeaDTO } from './idea.dto';
 import { IdeaService } from './idea.service';
 import { ValidationPipe } from '../shared/validation.pipe';
+import { User } from 'src/user/user.decorator';
 
 @Controller('api/idea')
 export class IdeaController {
@@ -19,16 +23,23 @@ export class IdeaController {
 
   constructor(private ideaService: IdeaService) {}
 
+  private logData(options: any) {
+    options.user && this.logger.log('USER' + JSON.stringify(options.user));
+    options.data && this.logger.log('DATA' + JSON.stringify(options.data));
+    options.id && this.logger.log('IDEA' + JSON.stringify(options.id));
+  }
+
   @Get()
   showAllIdeas() {
     return this.ideaService.showAll();
   }
 
   @Post()
+  @UseGuards(new AuthGuard())
   @UsePipes(new ValidationPipe())
-  createIdea(@Body() data: IdeaDTO) {
-    this.logger.log(JSON.stringify(data));
-    return this.ideaService.create(data);
+  createIdea(@User('id') userId: any, @Body() data: IdeaDTO) {
+    this.logData({ userId, data });
+    return this.ideaService.create(userId, data);
   }
 
   @Get(':id')
@@ -37,14 +48,21 @@ export class IdeaController {
   }
 
   @Put(':id')
+  @UseGuards(new AuthGuard())
   @UsePipes(new ValidationPipe())
-  updateIdea(@Param('id') id: string, @Body() data: Partial<IdeaDTO>) {
-    this.logger.log(JSON.stringify(data));
-    return this.ideaService.update(id, data);
+  updateIdea(
+    @Param('id') id: string,
+    @User('id') userId,
+    @Body() data: Partial<IdeaDTO>,
+  ) {
+    this.logData({ id, userId, data });
+    return this.ideaService.update(id, userId, data);
   }
 
   @Delete(':id')
-  deleteIdea(@Param('id') id: string) {
-    return this.ideaService.delete(id);
+  @UseGuards(new AuthGuard())
+  deleteIdea(@Param('id') id: string, @User() userId: string) {
+    this.logData({ id, userId });
+    return this.ideaService.delete(id, userId);
   }
 }
