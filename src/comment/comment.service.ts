@@ -26,19 +26,23 @@ export class CommentService {
     return responseObject;
   }
 
-  async showByIdea(id: string) {
-    const idea = await this.ideaRepository.findOne({
-      where: { id },
-      relations: ['comments', 'comments.author', 'comments.idea'],
+  async showByIdea(id: string, page = 1) {
+    const comments = await this.commentRepository.find({
+      where: { idea: { id } },
+      relations: ['author'],
+      take: 25,
+      skip: 25 * (page - 1),
     });
 
-    return idea.comments.map((comment) => this.toResponseObject(comment));
+    return comments.map((comment) => this.toResponseObject(comment));
   }
 
-  async showByUser(id: string) {
+  async showByUser(id: string, page = 1) {
     const comments = await this.commentRepository.find({
       where: { author: { id } },
       relations: ['author'],
+      take: 25,
+      skip: 25 * (page - 1),
     });
 
     return comments.map((comment) => this.toResponseObject(comment));
@@ -49,6 +53,7 @@ export class CommentService {
       where: { id },
       relations: ['author', 'idea'],
     });
+
     return this.toResponseObject(comment);
   }
 
