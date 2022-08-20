@@ -52,7 +52,7 @@ export class IdeaController {
   @UsePipes(new ValidationPipe())
   updateIdea(
     @Param('id') id: string,
-    @User('id') userId,
+    @User('id') userId: string,
     @Body() data: Partial<IdeaDTO>,
   ) {
     this.logData({ id, userId, data });
