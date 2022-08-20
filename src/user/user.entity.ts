@@ -15,7 +15,7 @@ import * as jwt from 'jsonwebtoken';
 import { UserRO } from './user.dto';
 import { IdeaEntity } from './../idea/idea.entity';
 
-@Entity('users')
+@Entity('user')
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
