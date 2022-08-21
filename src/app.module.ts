@@ -20,6 +20,7 @@ import ormconfig from './ormconfig';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
+      context: ({ req }) => ({ headers: req.headers }),
     }),
     IdeaModule,
     UserModule,

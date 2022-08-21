@@ -1,4 +1,4 @@
-import { CommentService } from './../comment/comment.service';
+import { CommentService } from '../comment/comment.service';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 

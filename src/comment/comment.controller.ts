@@ -1,5 +1,5 @@
 import { CommentDTO } from './comment.dto';
-import { ValidationPipe } from './../shared/validation.pipe';
+import { ValidationPipe } from '../shared/validation.pipe';
 import {
   Body,
   Controller,

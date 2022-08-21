@@ -18,6 +18,10 @@ export class HttpErrorFilter implements ExceptionFilter {
       ? exception.getStatus()
       : HttpStatus.INTERNAL_SERVER_ERROR;
 
+    if (!request || !response) {
+      return;
+    }
+
     const errorResponse = {
       code: status,
       timestamp: new Date().toISOString(),
