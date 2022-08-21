@@ -1,0 +1,12 @@
+type User {
+  id: ID!
+  username: String!
+  created: String!
+  bookmarks: [Idea!]
+  ideas: [Idea!]
+  comments: [Comment!]
+}
+
+type Query {
+  users(page: Int): [User!]
+}
