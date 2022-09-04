@@ -8,6 +8,7 @@ import {
 import { CommentService } from 'src/comment/comment.service';
 import { IdeaService } from './idea.service';
 
+// test pr
 @Resolver()
 export class IdeaResolver {
   constructor(
